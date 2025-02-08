@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import favicon from '@/assets/favicon.png';
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
