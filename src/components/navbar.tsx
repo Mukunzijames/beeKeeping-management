@@ -5,9 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import favicon from '@/assets/favicon.png';
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import dotenv from 'dotenv';
+import { useRouter } from 'next/navigation';
+
+dotenv.config();
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">
@@ -38,12 +43,12 @@ const Navbar: React.FC = () => {
 
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/login" className="text-gray-900 hover:text-gray-600">Login</Link>
-            <Link
-              href="/get-started"
+            <button
+              onClick={() => router.push('/signup')}
               className="bg-[#D86F55] text-white px-4 py-2 rounded-md hover:bg-[#C45E44]"
             >
               Get Started
-            </Link>
+            </button>
           </div>
 
           <div className="md:hidden">
@@ -82,12 +87,12 @@ const Navbar: React.FC = () => {
             <Link href="/pricing" className="block px-3 py-2 text-gray-900">Pricing</Link>
             <Link href="/contact" className="block px-3 py-2 text-gray-900">Contact</Link>
             <Link href="/login" className="block px-3 py-2 text-gray-900">Login</Link>
-            <Link
-              href="/get-started"
-              className="block px-3 py-2 text-white bg-[#D86F55] rounded-md"
+            <button
+              onClick={() => router.push('/signup')}
+              className="block w-full text-left px-3 py-2 text-white bg-[#D86F55] rounded-md"
             >
               Get Started
-            </Link>
+            </button>
           </div>
         </div>
       )}
