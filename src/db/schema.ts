@@ -12,7 +12,6 @@ import {
 
 export const hives = pgTable("hives", {
   id: serial("id").primaryKey(),
-  hiveId: varchar("hive_id", { length: 50 }).unique().notNull(),
   location: text("location").notNull(),
   type: varchar("type", { length: 100 }).notNull(),
   condition: text("condition"),
