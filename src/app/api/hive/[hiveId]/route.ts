@@ -8,10 +8,10 @@ import { revalidatePath } from "next/cache";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { hiveId: string } }
+  { params }: { params: Promise<{ hiveId: string }> }
 ) {
   try {
-    const { hiveId } = context.params;
+    const hiveId  = (await params).hiveId;
     const hive = await db.select().from(hives).where(eq(hives.id, parseInt(hiveId)));
     return NextResponse.json(hive);
   }
@@ -26,10 +26,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { hiveId: string } }
+  { params }: { params: Promise<{ hiveId: string }> }
 ) {
   try {
-    const { hiveId } = context.params;
+    const hiveId  = (await params).hiveId;
     const body = await req.json();
     const { condition, colonyStrength, location, type } = body;
 
@@ -60,12 +60,10 @@ export async function PUT(
     );
   }
 }
-  export async function DELETE(
-    req: NextRequest,
-    context: { params: { hiveId: string } }
-  ) {
+  export async function DELETE(req: NextRequest,
+    { params }: { params: Promise<{ hiveId: string }>  }) {
     try {
-      const { hiveId } = context.params;
+      const hiveId  = (await params).hiveId;
   
       const deletedHive = await db
         .delete(hives)
