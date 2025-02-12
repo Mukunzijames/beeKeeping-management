@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { hiveId: string } }
+  { params }: { params: { hiveId: string } } & { params: Record<string, string | string[]> }
 ) {
   try {
     const { hiveId } = params;
@@ -26,7 +26,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { hiveId: string } }
+  { params }: { params: { hiveId: string } } & { params: Record<string, string | string[]> }
 ) {
   try {
     const { hiveId } = params;
@@ -60,8 +60,10 @@ export async function PUT(
     );
   }
 }
-  export async function DELETE(req: NextRequest,
-    { params }: { params: { hiveId: string } }) {
+  export async function DELETE(
+    req: NextRequest,
+    { params }: { params: { hiveId: string } } & { params: Record<string, string | string[]> }
+  ) {
     try {
       const { hiveId } = params;
   
