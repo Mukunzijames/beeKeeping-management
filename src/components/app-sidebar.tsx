@@ -30,17 +30,17 @@ const overviewItems = [
     icon: LayoutGrid,
   },
   {
-    title: "Products",
+    title: "Colony",
     url: "#",
     icon: ShoppingBag,
   },
   {
-    title: "Messages",
+    title: "Equipment",
     url: "#",
     icon: MessageSquare,
   },
   {
-    title: "Order",
+    title: "feeds",
     url: "#",
     icon: ClipboardList,
   },
@@ -50,15 +50,27 @@ const overviewItems = [
     icon: Calendar,
   },
   {
-    title: "Activity",
+    title: "Sales",
     url: "#",
     icon: Activity,
   },
   {
-    title: "Static",
+    title: "Statistics",
     url: "#",
     icon: BarChart2,
   },
+  {
+    title: "Disease",
+    url: "#",
+    icon: BarChart2,
+  },
+  {
+    title: "Honey",
+    url: "#",
+    icon: BarChart2,
+  },
+
+  
 ]
 
 const accountItems = [
