@@ -9,8 +9,8 @@ export default function Login() {
     <div className="flex justify-center items-center h-screen">
       <div className="w-full max-w-md">
         <SignIn 
-          afterSignInUrl="/dashboard"
-          redirectUrl="/dashboard"
+          afterSignInUrl="/dashboard/stastics"
+          redirectUrl="/dashboard/stastics"
         />
       </div>
     </div>

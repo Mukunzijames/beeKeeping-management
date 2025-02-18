@@ -28,42 +28,42 @@ import {
 const overviewItems = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/dashboard",
     icon: LayoutGrid,
   },
   {
-    title: "Colony",
-    url: "#",
+    title: "Tasks",
+    url: "/dashboard/colony",
     icon: ShoppingBag,
   },
   {
     title: "Equipment",
-    url: "#",
+    url: "/dashboard/equipment",
     icon: MessageSquare,
   },
   {
-    title: "feeds",
-    url: "#",
+    title: "hives",
+    url: "/dashboard/hives",
     icon: ClipboardList,
   },
   {
     title: "Calendar",
-    url: "#",
+    url: "/dashboard/calendar",
     icon: Calendar,
   },
   {
     title: "Sales",
-    url: "#",
+    url: "/dashboard/sales",
     icon: Activity,
   },
   {
     title: "Statistics",
-    url: "#",
+    url: "/dashboard/stastics",
     icon: BarChart2,
   },
   {
     title: "Disease",
-    url: "#",
+    url: "/dashboard/disease",
     icon: BarChart2,
   },
   {
@@ -78,17 +78,17 @@ const overviewItems = [
 const accountItems = [
   {
     title: "Chat",
-    url: "#",
+    url: "/dashboard/chat",
     icon: MessageCircle,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/dashboard/settings",
     icon: Settings,
   },
   {
     title: "Log out",
-    url: "#",
+    url: "/dashboard/logout",
     icon: LogOut,
   },
 ]
