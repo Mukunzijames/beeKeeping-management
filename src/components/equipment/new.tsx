@@ -26,7 +26,7 @@ export default function NewEquipmentPage() {
         purchaseDate: formData.purchaseDate ? new Date(formData.purchaseDate) : null,
         lastMaintenance: formData.lastMaintenance ? new Date(formData.lastMaintenance) : null,
       });
-      router.push('/equipment');
+      router.push('/dashboard/equipment');
     } catch (error) {
       console.error('Error creating equipment:', error);
     }
