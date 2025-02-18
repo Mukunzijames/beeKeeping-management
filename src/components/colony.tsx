@@ -1,61 +1,56 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useTasks } from '@/hooks/useTasks';
 
 export default function ColonyPage() {
-  const [showFundedOnly, setShowFundedOnly] = useState(false);
-  const [selectedCompanies, setSelectedCompanies] = useState<number[]>([]);
+  const router = useRouter();
+  const { tasks, loading, error, fetchTasks } = useTasks();
+  const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
+  const [showCompletedOnly, setShowCompletedOnly] = useState(false);
 
-  const companies = [
-    {
-      name: "LottieFiles",
-      country: "Malaysia",
-      industry: "Software as a Service",
-      stage: "Pre-revenue",
-      fundedBy: "500 Startups"
-    },
-    {
-      name: "LottieFiles",
-      country: "Malaysia",
-      industry: "Software as a Service",
-      stage: "Pre-revenue",
-      fundedBy: "500 Startups"
-    },
-    {
-      name: "LottieFiles",
-      country: "Malaysia",
-      industry: "Software as a Service",
-      stage: "Pre-revenue",
-      fundedBy: "500 Startups"
-    }
-  ];
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
-  const handleCheckboxChange = (index: number) => {
-    setSelectedCompanies(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
+  const handleCheckboxChange = (taskId: number) => {
+    setSelectedTasks(prev => 
+      prev.includes(taskId) 
+        ? prev.filter(id => id !== taskId)
+        : [...prev, taskId]
     );
   };
 
-  const handleFundedOnlyChange = () => {
-    setShowFundedOnly(prev => !prev);
+  const handleCompletedOnlyChange = () => {
+    setShowCompletedOnly(prev => !prev);
   };
+
+  const handleAddTask = () => {
+    router.push('/dashboard/tasks/new');
+  };
+
+  const filteredTasks = showCompletedOnly 
+    ? tasks.filter(task => task.status === 'completed')
+    : tasks;
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-bold mb-8">Companies 1,260</h1>
+      <h1 className="text-3xl font-bold mb-8">Tasks {tasks.length}</h1>
       <div className="flex items-center justify-between mb-8 border-b pb-4">
         <div className="flex items-center gap-6">
           <div className="flex gap-6">
             <button className="text-purple-600 border-b-2 border-purple-600 pb-2 font-medium hover:text-purple-700 transition-colors">
-              General View
+              All Tasks
             </button>
             <button className="text-gray-500 hover:text-gray-700 transition-colors pb-2">
-              Bootstrapped Companies
+              In Progress
             </button>
             <button className="text-gray-500 hover:text-gray-700 transition-colors pb-2">
-              Pre-seed Stage
+              Completed
             </button>
           </div>
         </div>
@@ -72,19 +67,22 @@ export default function ColonyPage() {
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
-              checked={showFundedOnly}
-              onChange={handleFundedOnlyChange}
+              checked={showCompletedOnly}
+              onChange={handleCompletedOnlyChange}
               className="form-checkbox text-purple-600 rounded"
             />
-            <span>Funded companies</span>
+            <span>Completed tasks</span>
           </label>
         </div>
         <div className="flex items-center gap-4">
           <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
             Download CSV
           </button>
-          <button className="px-6 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors">
-            Add companies
+          <button 
+            onClick={handleAddTask}
+            className="px-6 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            Add Task
           </button>
         </div>
       </div>
@@ -96,38 +94,38 @@ export default function ColonyPage() {
               <th className="pl-6 pr-4 py-4 w-12">
                 <input type="checkbox" className="form-checkbox rounded" readOnly />
               </th>
-              <th className="px-4 py-4 font-medium">Companies</th>
-              <th className="px-4 py-4 font-medium">Country</th>
-              <th className="px-4 py-4 font-medium">Industry</th>
-              <th className="px-4 py-4 font-medium">Stage</th>
-              <th className="px-4 py-4 font-medium">Funded by</th>
+              <th className="px-4 py-4 font-medium">Task Type</th>
+              <th className="px-4 py-4 font-medium">Description</th>
+              <th className="px-4 py-4 font-medium">Assigned To</th>
+              <th className="px-4 py-4 font-medium">Status</th>
+              <th className="px-4 py-4 font-medium">Due Date</th>
               <th className="w-10"></th>
             </tr>
           </thead>
           <tbody>
-            {companies.map((company, index) => (
-              <tr key={index} className="border-b hover:bg-gray-50 transition-colors">
+            {filteredTasks.map((task) => (
+              <tr key={task.id} className="border-b hover:bg-gray-50 transition-colors">
                 <td className="pl-6 pr-4 py-4">
                   <input
                     type="checkbox"
-                    checked={selectedCompanies.includes(index)}
-                    onChange={() => handleCheckboxChange(index)}
+                    checked={selectedTasks.includes(task.id)}
+                    onChange={() => handleCheckboxChange(task.id)}
                     className="form-checkbox rounded"
                   />
                 </td>
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-medium">{company.name}</span>
+                    <span className="font-medium">{task.taskType}</span>
                   </div>
                 </td>
-                <td className="px-4 py-4">{company.country}</td>
-                <td className="px-4 py-4">{company.industry}</td>
+                <td className="px-4 py-4">{task.description}</td>
+                <td className="px-4 py-4">{task.assignedTo || 'Unassigned'}</td>
                 <td className="px-4 py-4">
                   <span className="px-3 py-1 text-purple-600 bg-purple-100 rounded-full text-sm font-medium">
-                    {company.stage}
+                    {task.status}
                   </span>
                 </td>
-                <td className="px-4 py-4">{company.fundedBy}</td>
+                <td className="px-4 py-4">{task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}</td>
                 <td className="w-10">
                   <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                     <span className="text-gray-500">...</span>
@@ -140,4 +138,4 @@ export default function ColonyPage() {
       </div>
     </div>
   );
-} 
+}

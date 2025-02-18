@@ -88,7 +88,6 @@ export const inventory = pgTable("inventory", {
 
 export const sales = pgTable("sales", {
   id: serial("id").primaryKey(),
-  productId: integer("product_id").references(() => inventory.id),
   quantity: decimal("quantity").notNull(),
   unitPrice: decimal("unit_price").notNull(),
   totalAmount: decimal("total_amount").notNull(),
@@ -136,12 +135,7 @@ export const pestDiseaseManagementRelations = relations(pestDiseaseManagement, (
   }),
 }));
 
-export const salesRelations = relations(sales, ({ one }) => ({
-  product: one(inventory, {
-    fields: [sales.productId],
-    references: [inventory.id],
-  }),
-}));
+
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
   hive: one(hives, {
