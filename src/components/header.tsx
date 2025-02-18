@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import headerImage from '@/assets/pexels-glazun0v-4247181.jpg';

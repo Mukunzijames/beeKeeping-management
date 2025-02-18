@@ -1,6 +1,18 @@
+'use client';
 import { SignUp } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
-  return <div className="flex justify-center items-center h-screen"><div className="w-full max-w-md"><SignUp /></div></div>;
-;
+  const router = useRouter();
+
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-full max-w-md">
+        <SignUp 
+          afterSignUpUrl="/login"
+          redirectUrl="/login"
+        />
+      </div>
+    </div>
+  );
 }

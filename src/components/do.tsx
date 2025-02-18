@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { FaBook } from 'react-icons/fa';
 import { MdLocationOn } from 'react-icons/md';
