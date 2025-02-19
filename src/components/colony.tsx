@@ -3,16 +3,47 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTasks } from '@/hooks/useTasks';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { toast } from 'sonner';
 
 export default function ColonyPage() {
   const router = useRouter();
-  const { tasks, loading, error, fetchTasks } = useTasks();
+  const { tasks, loading, error, fetchTasks, deleteTask, updateTask } = useTasks();
   const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
   const [showCompletedOnly, setShowCompletedOnly] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState<any>({});
 
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
+
+  const handleEdit = (task: any) => {
+    setEditingId(task.id);
+    setEditForm(task);
+  };
+
+  const handleUpdate = async (id: number) => {
+    try {
+      await updateTask(id.toString(), editForm);
+      setEditingId(null);
+      setEditForm({});
+      toast.success('Task updated successfully!');
+    } catch (error) {
+      toast.error('Failed to update task');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      try {
+        await deleteTask(id.toString());
+        toast.success('Task deleted successfully!');
+      } catch (error) {
+        toast.error('Failed to delete task');
+      }
+    }
+  };
 
   const handleCheckboxChange = (taskId: number) => {
     setSelectedTasks(prev => 
@@ -30,106 +61,146 @@ export default function ColonyPage() {
     router.push('/dashboard/tasks/new');
   };
 
+  const getStatusColor = (status: string) => {
+    switch(status.toLowerCase()) {
+      case 'completed':
+        return 'bg-green-100 text-green-800';
+      case 'in-progress':
+        return 'bg-blue-100 text-blue-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   const filteredTasks = showCompletedOnly 
     ? tasks.filter(task => task.status === 'completed')
     : tasks;
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className="text-sm">Loading...</div>;
+  if (error) return <div className="text-sm text-red-500">Error: {error}</div>;
 
   return (
-    <div className="w-full">
-      <h1 className="text-3xl font-bold mb-8">Tasks {tasks.length}</h1>
-      <div className="flex items-center justify-between mb-8 border-b pb-4">
-        <div className="flex items-center gap-6">
-          <div className="flex gap-6">
-            <button className="text-purple-600 border-b-2 border-purple-600 pb-2 font-medium hover:text-purple-700 transition-colors">
-              All Tasks
-            </button>
-            <button className="text-gray-500 hover:text-gray-700 transition-colors pb-2">
-              In Progress
-            </button>
-            <button className="text-gray-500 hover:text-gray-700 transition-colors pb-2">
-              Completed
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between mb-8">
+    <div className="w-full font-sans">
+      <h1 className="text-2xl font-bold mb-6">Tasks ({tasks.length})</h1>
+      
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-            <span>Filter</span>
+          <button className="text-xs px-3 py-1.5 border rounded hover:bg-gray-50">
+            Filter
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-            <span>Sort</span>
-          </button>
-          <label className="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 text-xs cursor-pointer">
             <input
               type="checkbox"
               checked={showCompletedOnly}
               onChange={handleCompletedOnlyChange}
-              className="form-checkbox text-purple-600 rounded"
+              className="form-checkbox text-amber-600 rounded"
             />
-            <span>Completed tasks</span>
+            <span>Show completed only</span>
           </label>
         </div>
-        <div className="flex items-center gap-4">
-          <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-            Download CSV
-          </button>
-          <button 
-            onClick={handleAddTask}
-            className="px-6 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            Add Task
-          </button>
-        </div>
+        <button 
+          onClick={handleAddTask}
+          className="text-xs px-4 py-1.5 bg-amber-600 text-white rounded hover:bg-amber-700"
+        >
+          Add Task
+        </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-        <table className="w-full">
+      <div className="bg-white rounded-lg shadow-sm">
+        <table className="w-full text-xs">
           <thead>
-            <tr className="text-left border-b bg-gray-50">
-              <th className="pl-6 pr-4 py-4 w-12">
-                <input type="checkbox" className="form-checkbox rounded" readOnly />
-              </th>
-              <th className="px-4 py-4 font-medium">Task Type</th>
-              <th className="px-4 py-4 font-medium">Description</th>
-              <th className="px-4 py-4 font-medium">Assigned To</th>
-              <th className="px-4 py-4 font-medium">Status</th>
-              <th className="px-4 py-4 font-medium">Due Date</th>
-              <th className="w-10"></th>
+            <tr className="bg-gray-50 border-b">
+              <th className="p-3 text-left font-medium text-gray-600">TYPE</th>
+              <th className="p-3 text-left font-medium text-gray-600">DESCRIPTION</th>
+              <th className="p-3 text-left font-medium text-gray-600">ASSIGNED TO</th>
+              <th className="p-3 text-left font-medium text-gray-600">STATUS</th>
+              <th className="p-3 text-left font-medium text-gray-600">DUE DATE</th>
+              <th className="p-3 text-left font-medium text-gray-600">ACTIONS</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-100">
             {filteredTasks.map((task) => (
-              <tr key={task.id} className="border-b hover:bg-gray-50 transition-colors">
-                <td className="pl-6 pr-4 py-4">
-                  <input
-                    type="checkbox"
-                    checked={selectedTasks.includes(task.id)}
-                    onChange={() => handleCheckboxChange(task.id)}
-                    className="form-checkbox rounded"
-                  />
+              <tr key={task.id} className="hover:bg-gray-50">
+                <td className="p-3">
+                  {editingId === task.id ? (
+                    <input
+                      value={editForm.taskType || ''}
+                      onChange={(e) => setEditForm({...editForm, taskType: e.target.value})}
+                      className="p-1 border rounded text-xs w-full"
+                    />
+                  ) : task.taskType}
                 </td>
-                <td className="px-4 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="font-medium">{task.taskType}</span>
+                <td className="p-3">
+                  {editingId === task.id ? (
+                    <input
+                      value={editForm.description || ''}
+                      onChange={(e) => setEditForm({...editForm, description: e.target.value})}
+                      className="p-1 border rounded text-xs w-full"
+                    />
+                  ) : task.description}
+                </td>
+                <td className="p-3">
+                  {editingId === task.id ? (
+                    <input
+                      value={editForm.assignedTo || ''}
+                      onChange={(e) => setEditForm({...editForm, assignedTo: e.target.value})}
+                      className="p-1 border rounded text-xs w-full"
+                    />
+                  ) : task.assignedTo || 'Unassigned'}
+                </td>
+                <td className="p-3">
+                  {editingId === task.id ? (
+                    <select
+                      value={editForm.status || ''}
+                      onChange={(e) => setEditForm({...editForm, status: e.target.value})}
+                      className="p-1 border rounded text-xs"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="in-progress">In Progress</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                  ) : (
+                    <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getStatusColor(task.status)}`}>
+                      {task.status}
+                    </span>
+                  )}
+                </td>
+                <td className="p-3">
+                  {editingId === task.id ? (
+                    <input
+                      type="date"
+                      value={editForm.dueDate || ''}
+                      onChange={(e) => setEditForm({...editForm, dueDate: e.target.value})}
+                      className="p-1 border rounded text-xs"
+                    />
+                  ) : task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
+                </td>
+                <td className="p-3">
+                  <div className="flex gap-2">
+                    {editingId === task.id ? (
+                      <button
+                        onClick={() => handleUpdate(task.id)}
+                        className="p-1 text-amber-600 hover:text-amber-700"
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleEdit(task)}
+                        className="p-1 text-gray-600 hover:text-gray-800"
+                      >
+                        <PencilIcon className="w-4 h-4" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDelete(task.id)}
+                      className="p-1 text-red-600 hover:text-red-700"
+                    >
+                      <TrashIcon className="w-4 h-4" />
+                    </button>
                   </div>
-                </td>
-                <td className="px-4 py-4">{task.description}</td>
-                <td className="px-4 py-4">{task.assignedTo || 'Unassigned'}</td>
-                <td className="px-4 py-4">
-                  <span className="px-3 py-1 text-purple-600 bg-purple-100 rounded-full text-sm font-medium">
-                    {task.status}
-                  </span>
-                </td>
-                <td className="px-4 py-4">{task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}</td>
-                <td className="w-10">
-                  <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                    <span className="text-gray-500">...</span>
-                  </button>
                 </td>
               </tr>
             ))}

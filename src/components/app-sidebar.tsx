@@ -52,7 +52,7 @@ const overviewItems = [
     icon: BarChart2,
   },
   {
-    title: "Honey",
+    title: "colony",
     url: "/dashboard/colonys",
     icon: BarChart2,
   },

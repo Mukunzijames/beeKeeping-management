@@ -45,81 +45,100 @@ export default function HvessPage() {
     }
   };
 
+  const getConditionColor = (condition: string) => {
+    switch(condition.toLowerCase()) {
+      case 'excellent':
+        return 'bg-green-100 text-green-800';
+      case 'good':
+        return 'bg-blue-100 text-blue-800';
+      case 'fair':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'poor':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="p-4">
+    <div className="p-4 font-sans text-sm">
       <div className="mb-4 flex justify-between items-center">
         <input
           type="text"
           placeholder="Search...."
-          className="p-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-amber-500 text-xs"
         />
         <button 
           onClick={() => router.push('/dashboard/hives/new')}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          className="bg-amber-600 text-white px-3 py-1.5 rounded text-xs hover:bg-amber-700"
         >
-          Add New
+          Add Hive
         </button>
       </div>
 
-      <div className="w-full bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full text-xs">
             <thead>
-              <tr className="text-left border-b">
-                <th className="p-4">LOCATION</th>
-                <th className="p-4">TYPE</th>
-                <th className="p-4">CONDITION</th>
-                <th className="p-4">COLONY STRENGTH</th>
-                <th className="p-4">ACTIONS</th>
+              <tr className="bg-gray-50 border-b">
+                <th className="p-3 text-left font-medium text-gray-600">LOCATION</th>
+                <th className="p-3 text-left font-medium text-gray-600">TYPE</th>
+                <th className="p-3 text-left font-medium text-gray-600">CONDITION</th>
+                <th className="p-3 text-left font-medium text-gray-600">COLONY STRENGTH</th>
+                <th className="p-3 text-left font-medium text-gray-600">ACTIONS</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-100">
               {hives?.map((hive) => (
-                <tr key={hive.id} className="border-b hover:bg-gray-50">
-                  <td className="p-4">
+                <tr key={hive.id} className="hover:bg-gray-50">
+                  <td className="p-3">
                     {editingId === hive.id ? (
                       <input
                         value={editForm.location || ''}
                         onChange={(e) => setEditForm({...editForm, location: e.target.value})}
-                        className="p-1 border rounded"
+                        className="p-1 border rounded text-xs w-full"
                       />
                     ) : hive.location}
                   </td>
-                  <td className="p-4">
+                  <td className="p-3">
                     {editingId === hive.id ? (
                       <input
                         value={editForm.type || ''}
                         onChange={(e) => setEditForm({...editForm, type: e.target.value})}
-                        className="p-1 border rounded"
+                        className="p-1 border rounded text-xs w-full"
                       />
                     ) : hive.type}
                   </td>
-                  <td className="p-4">
+                  <td className="p-3">
                     {editingId === hive.id ? (
                       <input
                         value={editForm.condition || ''}
                         onChange={(e) => setEditForm({...editForm, condition: e.target.value})}
-                        className="p-1 border rounded"
+                        className="p-1 border rounded text-xs w-full"
                       />
-                    ) : hive.condition}
+                    ) : (
+                      <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getConditionColor(hive.condition)}`}>
+                        {hive.condition}
+                      </span>
+                    )}
                   </td>
-                  <td className="p-4">
+                  <td className="p-3">
                     {editingId === hive.id ? (
                       <input
                         value={editForm.colonyStrength || ''}
                         onChange={(e) => setEditForm({...editForm, colonyStrength: e.target.value})}
-                        className="p-1 border rounded"
+                        className="p-1 border rounded text-xs w-full"
                       />
                     ) : hive.colonyStrength}
                   </td>
-                  <td className="p-4">
-                    <div className="flex gap-2">
+                  <td className="p-3">
+                    <div className="flex gap-1">
                       {editingId === hive.id ? (
                         <button 
                           onClick={() => handleUpdate(hive.id)}
-                          className="p-1 bg-green-500 text-white rounded"
+                          className="p-1 bg-amber-600 text-white rounded text-xs hover:bg-amber-700"
                         >
                           Save
                         </button>
@@ -128,14 +147,14 @@ export default function HvessPage() {
                           onClick={() => handleEdit(hive)}
                           className="p-1 hover:bg-gray-100 rounded"
                         >
-                          <PencilIcon className="h-5 w-5 text-gray-500" />
+                          <PencilIcon className="h-4 w-4 text-gray-500" />
                         </button>
                       )}
                       <button 
                         onClick={() => handleDelete(hive.id)}
                         className="p-1 hover:bg-gray-100 rounded"
                       >
-                        <TrashIcon className="h-5 w-5 text-red-500" />
+                        <TrashIcon className="h-4 w-4 text-red-500" />
                       </button>
                     </div>
                   </td>

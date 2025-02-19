@@ -19,7 +19,7 @@ export default function NewTaskPage() {
     hiveId: "",
     taskType: "feeding",
     description: "",
-    assignedTo: "",
+    assignedTo: "", 
     dueDate: "",
     status: "pending",
     notes: "",
@@ -37,7 +37,7 @@ export default function NewTaskPage() {
       });
 
       if (response.ok) {
-        router.push('/colony'); // Redirect back to tasks list
+        router.push('/dashboard/colony');
       } else {
         throw new Error('Failed to create task');
       }
@@ -55,15 +55,15 @@ export default function NewTaskPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Create New Task</h1>
+    <div className="max-w-2xl mx-auto py-6 font-sans text-sm">
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold text-amber-800">Create New Task</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="hiveId" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="hiveId" className="block text-xs font-medium text-gray-700 mb-1">
               Hive ID
             </label>
             <input
@@ -72,13 +72,13 @@ export default function NewTaskPage() {
               name="hiveId"
               value={formData.hiveId}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-1.5 text-xs border rounded focus:ring-1 focus:ring-amber-500 focus:border-transparent"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="taskType" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="taskType" className="block text-xs font-medium text-gray-700 mb-1">
               Task Type
             </label>
             <select
@@ -86,7 +86,7 @@ export default function NewTaskPage() {
               name="taskType"
               value={formData.taskType}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-1.5 text-xs border rounded focus:ring-1 focus:ring-amber-500 focus:border-transparent"
               required
             >
               <option value="feeding">Feeding</option>
@@ -98,7 +98,7 @@ export default function NewTaskPage() {
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="description" className="block text-xs font-medium text-gray-700 mb-1">
             Description
           </label>
           <input
@@ -107,14 +107,14 @@ export default function NewTaskPage() {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full px-3 py-1.5 text-xs border rounded focus:ring-1 focus:ring-amber-500 focus:border-transparent"
             required
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="assignedTo" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="assignedTo" className="block text-xs font-medium text-gray-700 mb-1">
               Assigned To
             </label>
             <input
@@ -123,13 +123,13 @@ export default function NewTaskPage() {
               name="assignedTo"
               value={formData.assignedTo}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-1.5 text-xs border rounded focus:ring-1 focus:ring-amber-500 focus:border-transparent"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="dueDate" className="block text-xs font-medium text-gray-700 mb-1">
               Due Date
             </label>
             <input
@@ -138,14 +138,14 @@ export default function NewTaskPage() {
               name="dueDate"
               value={formData.dueDate}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-1.5 text-xs border rounded focus:ring-1 focus:ring-amber-500 focus:border-transparent"
               required
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="notes" className="block text-xs font-medium text-gray-700 mb-1">
             Notes
           </label>
           <textarea
@@ -154,21 +154,21 @@ export default function NewTaskPage() {
             value={formData.notes}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full px-3 py-1.5 text-xs border rounded focus:ring-1 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-3 pt-2">
           <button
             type="submit"
-            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            className="px-4 py-1.5 text-xs bg-amber-600 text-white rounded hover:bg-amber-700 transition-colors"
           >
             Create Task
           </button>
           <button
             type="button"
-            onClick={() => router.back()}
-            className="px-6 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
+            onClick={() => router.push('/dashboard/colony')}
+            className="px-4 py-1.5 text-xs border rounded hover:bg-gray-50 transition-colors"
           >
             Cancel
           </button>
@@ -176,4 +176,4 @@ export default function NewTaskPage() {
       </form>
     </div>
   );
-} 
+}
