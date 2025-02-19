@@ -6,7 +6,7 @@ import headerImage from '@/assets/pexels-glazun0v-4247181.jpg';
 
 const Header: React.FC = () => {
   return (
-    <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-[70px] py-12 sm:py-20 lg:pt-[150px] flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-0">
+    <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-[70px] py-12 sm:py-20 lg:pt-[150px] flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-0 bg-gradient-to-br from-teal-200 via-purple-200 to-rose-200">
       <div className="max-w-2xl text-center lg:text-left">
         <h1 className="text-[35px] sm:text-[45px] lg:text-[55px] leading-tight font-bold text-[#2D3748] mb-6 ">
           Manage bee farms

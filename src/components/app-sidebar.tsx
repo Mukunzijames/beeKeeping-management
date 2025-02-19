@@ -47,28 +47,13 @@ const overviewItems = [
     icon: ClipboardList,
   },
   {
-    title: "Calendar",
-    url: "/dashboard/calendar",
-    icon: Calendar,
-  },
-  {
-    title: "Sales",
-    url: "/dashboard/sales",
-    icon: Activity,
-  },
-  {
     title: "Statistics",
     url: "/dashboard/stastics",
     icon: BarChart2,
   },
   {
-    title: "Disease",
-    url: "/dashboard/disease",
-    icon: BarChart2,
-  },
-  {
     title: "Honey",
-    url: "#",
+    url: "/dashboard/colonys",
     icon: BarChart2,
   },
 

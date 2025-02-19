@@ -25,43 +25,33 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon }) =
   </div>
 );
 
-const BeekeepingManagement: React.FC = () => {
-  const features = [
-    {
-      title: "Expenses/Day Book",
-      description: "With NAVFarm beekeeping software, you can create handy expenses and day books to keep track of your daily expenses. ",
-      icon: <FaBook />
-    },
-    {
-      title: "Record Keeping",
-      description: "Record keeping is the first and foremost requirement for the smooth functioning of apiculture. With NAVFarm, record keeping becomes as smooth as butter for apiculturists of all levels, beginner to experts.",
-      icon: <MdLocationOn />
-    },
-    {
-      title: "Alerts & Notifications",
-      description: "Stay abreast about your agribusiness! With NAVFarm you can get all the necessary alerts and notifications related to your business, from the market price to the total payment, feeds to flock.",
-      icon: <BsBellFill />
-    }
-  ];
-
+const BeekeepingManagement = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold text-center mb-4 text-gray-800">The Easiest</h1>
-      <h2 className="text-4xl font-bold text-center mb-8 text-gray-800">
-        Beekeeping Management <span className="font-normal">App</span>
-      </h2>
-      <p className="text-gray-600 text-center mb-16 max-w-4xl mx-auto">
-        Transform your valuable information into extensive knowledge with our Beehive Management Software. With NAVFarm, you can have absolute control over your apiary.
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {features.map((feature, index) => (
-          <FeatureCard key={index} {...feature} />
-        ))}
+    <section id="management" className="py-20 bg-gradient-to-b from-amber-50 to-blue-100">
+      <div className="container mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center mb-12">Apiculture System</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 className="text-2xl font-semibold mb-4">Smart Bee Management</h3>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              Our comprehensive bee management system combines traditional wisdom with 
+              cutting-edge technology. We help beekeepers monitor hive health, track colony 
+              development, and optimize honey production through sustainable practices.
+            </p>
+            <button className="bg-amber-600 text-white px-8 py-3 rounded-lg hover:bg-amber-700 
+              transition-colors">
+              Get Started
+            </button>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h4 className="font-semibold mb-2">Hive Monitoring</h4>
+              <p className="text-gray-600">Real-time tracking of hive conditions</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <p className="text-gray-600 text-center mt-16 max-w-4xl mx-auto">
-        Beekeeping management is not easy, especially when you have different varieties of bees with disparate dispositions. It is best to have a beekeeping management application that can help you deal with your apiary's day-to-day tasks. NAVFarm apiary management software not only allows you to track records of your apiary but also helps you manage your business efficiently.
-      </p>
-    </div>
+    </section>
   );
 };
 

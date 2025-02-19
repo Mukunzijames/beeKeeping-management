@@ -1,15 +1,20 @@
 import Image from "next/image";
 import Navbar from "@/components/navbar";
 import Header from "@/components/header";
-import Footer from "@/components/footer";
+import AboutUs from "@/components/about";
+import Testimonials from "@/components/testimonials";
 import BeekeepingManagement from "@/components/do";
+import Footer from "@/components/footer";
+
 export default function Home() {
   return (
-    <div>
+    <main className="overflow-hidden">
       <Navbar />
       <Header />
+      <AboutUs />
       <BeekeepingManagement />
+      <Testimonials />
       <Footer />
-    </div>
+    </main>
   );
 }
