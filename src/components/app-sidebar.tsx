@@ -70,12 +70,7 @@ const accountItems = [
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
-  },
-  {
-    title: "Log out",
-    url: "/dashboard/logout",
-    icon: LogOut,
-  },
+  }
 ]
 
 export function AppSidebar() {
